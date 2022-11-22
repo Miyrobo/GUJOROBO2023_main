@@ -1,9 +1,18 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-#include "Arduino.h"
 #include "Adafruit_BNO055.h"
+#include "Arduino.h"
 #include "SPI.h"
+
+// MPU6050
+#include <MPU6050_6Axis_MotionApps20.h>
+#include <Wire.h>
+
+#define Gyro_X -1529
+#define Gyro_Y -981
+#define Gyro_Z -131
+#define Accel_Z -1458
 
 #define NUM_balls 16
 #define NUM_lines 25
@@ -26,18 +35,19 @@ class BALL {
 
 class LINE {
  public:
-  bool isOnline = 0;  //ライン上か
-  bool isHalfout = 0; //半分以上外
-  int dir;            //コートの方向
-  int x,y;            //位置
-  void get_state();         //状態取得
+  bool isOnline = 0;   //ライン上か
+  bool isHalfout = 0;  //半分以上外
+  int dir;             //コートの方向
+  int x, y;            //位置
+  void get_state();    //状態取得
   bool state[NUM_lines];
+
  private:
-  int _pin[NUM_lines]={};
+  int _pin[NUM_lines] = {};
   int _th[NUM_lines];
 };
 
-class BNO{
+class BNO {
  public:
   double ypr[3];
   void setup();
@@ -46,6 +56,22 @@ class BNO{
   int dir;
 
  private:
+  int dir0;
+};
+
+class MPU {
+ public:
+  float ypr[3];
+  void setup();
+  void get();
+  void reset();
+  int dir;
+
+ private:
+ uint16_t fifoCount;
+  uint8_t fifoBuffer[64];  // FIFO storage buffer //orientation/motion vars
+  Quaternion q;            // [w, x, y, z]         quaternion container
+  VectorFloat gravity;     // [x, y, z]            gravity vector
   int dir0;
 };
 
