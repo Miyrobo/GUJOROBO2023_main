@@ -28,9 +28,11 @@ class BALL {
   int dir;          //ボールの方向
   double distance;  //ボールまでの距離
   int x, y;
-
+  int num;  //見えている数
+  bool isExist;   //ボールがあるか
  private:
   int pin[NUM_balls] = {};  //ピン番号
+  const int _th = 700;      //反応限界
 };
 
 class LINE {
