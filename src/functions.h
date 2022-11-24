@@ -3,7 +3,7 @@
 #define FUNCTIONS_H
 #include "Arduino.h"
 
-#define BUZZER_PIN 11;   //ブザーのピン
+#define BUZZER_PIN 16;   //ブザーのピン
 
 #define length 200
 

@@ -5,9 +5,9 @@
 #include "Arduino.h"
 #include "SPI.h"
 
-// MPU6050
-#include <MPU6050_6Axis_MotionApps20.h>
-#include <Wire.h>
+
+//#include <MPU6050_6Axis_MotionApps20.h>
+//#include <Wire.h>
 
 #define Gyro_X -1529
 #define Gyro_Y -981
@@ -61,21 +61,21 @@ class BNO {
   int dir0;
 };
 
-class MPU {
- public:
-  float ypr[3];
-  void setup();
-  void get();
-  void reset();
-  int dir;
+// class MPU {
+//  public:
+//   float ypr[3];
+//   void setup();
+//   void get();
+//   void reset();
+//   int dir;
 
- private:
- uint16_t fifoCount;
-  uint8_t fifoBuffer[64];  // FIFO storage buffer //orientation/motion vars
-  Quaternion q;            // [w, x, y, z]         quaternion container
-  VectorFloat gravity;     // [x, y, z]            gravity vector
-  int dir0;
-};
+//  private:
+//  uint16_t fifoCount;
+//   uint8_t fifoBuffer[64];  // FIFO storage buffer //orientation/motion vars
+//   Quaternion q;            // [w, x, y, z]         quaternion container
+//   VectorFloat gravity;     // [x, y, z]            gravity vector
+//   int dir0;
+// };
 
 class CAMERA {
  public:

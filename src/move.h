@@ -10,9 +10,9 @@ class MOTOR{
     void stop();
     void pwm_out();
   private:
-    const int _pin[8]={};
+    const int _pin[8]={3,5,8,12,2,6,7,11};
     const int _angle[4]={-45,45,135,-135};  //モーター取り付け角度
-    const float _corr[4]={1,1,1,1};         //回転補正
+    const float _corr[4]={1,-1,-1,1};         //回転補正
 };
 
 #endif
