@@ -4,9 +4,9 @@
 
 Adafruit_BNO055 bno055 = Adafruit_BNO055(-1, 0x28);
 // MPU6050 mpu;
-static uint8_t mpuIntStatus;
-static bool dmpReady = false;  // set true if DMP init was successful
-static uint16_t packetSize;    // expected DMP packet size (default is 42 bytes)
+// static uint8_t mpuIntStatus;
+// static bool dmpReady = false;  // set true if DMP init was successful
+// static uint16_t packetSize;    // expected DMP packet size (default is 42 bytes)
 
 void BALL::get() {  //ボールの位置取得
   x = 0;
@@ -109,4 +109,12 @@ void LINE::get_state() {
       state[i] = false;
     }
   }
+}
+
+
+void LINE::LEDset(int s = -1){  //ラインのLED操作
+  if(s==-1){
+    s=this->_LED;
+  }
+  digitalWrite(ledpin,s);
 }

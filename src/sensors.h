@@ -43,9 +43,12 @@ class LINE {
   int x, y;            //位置
   void get_state();    //状態取得
   bool state[NUM_lines];
+  void LEDset(int s);   //LED操作
 
  private:
+  bool _LED = true;
   int _pin[NUM_lines] = {};
+  int ledpin;                 //LED制御ピン
   int _th[NUM_lines];
 };
 

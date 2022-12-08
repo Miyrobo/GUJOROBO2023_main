@@ -5,7 +5,6 @@
 
 
 BNO bno;
-
 MOTOR motor;
 
 void setup() {
