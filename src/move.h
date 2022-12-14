@@ -15,4 +15,13 @@ class MOTOR{
     const float _corr[4]={1,-1,-1,1};         //回転補正
 };
 
+class MOVE{
+  public:
+    int dir; //進む方向
+    int speed; //スピード
+    void carryball(int balldir);
+  private:
+
+};
+
 #endif

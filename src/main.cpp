@@ -8,8 +8,8 @@
 BNO bno;
 BALL ball;
 MOTOR motor;
-
 TIMER timer;
+SOUND buzzer;
 Adafruit_SSD1306 display(128, 64, &Wire, -1);
 
 
@@ -18,25 +18,29 @@ void setup() {
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C); //ディスプレイ初期化処理
   Serial.begin(9600);
   Serial2.begin(9600);
-  pinMode(10, OUTPUT);
-  // buzzer.windowsXP();
-  digitalWrite(10, HIGH);
-  delay(1000);
-  digitalWrite(10, LOW);
-  delay(1000);
-  digitalWrite(10, HIGH);
-  delay(1000);
-  for (int i = 0; i < 3; i++) {
-    delay(100);
-    digitalWrite(10, LOW);
-    delay(100);
-    digitalWrite(10, HIGH);
-  }
+
+  buzzer.windowsXP();
+  // pinMode(10, OUTPUT);
+  // // buzzer.windowsXP();
+  // digitalWrite(10, HIGH);
+  // delay(1000);
+  // digitalWrite(10, LOW);
+  // delay(1000);
+  // digitalWrite(10, HIGH);
+  // delay(1000);
+  // for (int i = 0; i < 3; i++) {
+  //   delay(100);
+  //   digitalWrite(10, LOW);
+  //   delay(100);
+  //   digitalWrite(10, HIGH);
+  // }
 }
 
 
 void loop() {
-  Serial.println(analogRead(A0));
+  //Serial.println(analogRead(A0));
+  ball.get();
+  //Serial.println(ball.dir);
   delay(100);
 }
 

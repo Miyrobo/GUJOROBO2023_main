@@ -35,3 +35,12 @@ void MOTOR::set_power(int m1, int m2, int m3, int m4) {
   m_speed[2] = m3;
   m_speed[3] = m4;
 }
+
+
+void MOVE::carryball(int balldir){
+  if(balldir <= 5 && balldir >= -5){
+    this->dir = 0;
+  }else{
+    this->dir = balldir * 1.5;
+  }
+}

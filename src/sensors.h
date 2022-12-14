@@ -1,6 +1,8 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
+#define ball_debug
+
 #include "Adafruit_BNO055.h"
 #include "Arduino.h"
 #include "SPI.h"
@@ -9,9 +11,9 @@
 #define NUM_balls 16
 #define NUM_lines 20
 
-const double SIN16[16] = {0.0,   0.383,  0.707,  0.924,  1.0,    0.924,
-                          0.707, 0.383,  0.0,    -0.383, -0.707, -0.924,
-                          -1.0,  -0.924, -0.707, -0.383};
+const int SIN16_1000[16] = {0,   383,  707,  924,  1000,   924,
+                          707, 383,  0, -383, -707, -924,
+                          -1000, -924, -707, -383};
 
 class BALL {
  public:
@@ -19,11 +21,14 @@ class BALL {
   void get();
   int dir;          //ボールの方向
   double distance;  //ボールまでの距離
-  int x, y;
+  long x, y;
+  int max;
+  int maxn;
   int num;  //見えている数
   bool isExist;   //ボールがあるか
  private:
-  int pin[NUM_balls] = {A8,A10,A14,A15,A13,A11,A9,A7,A5,A3,A1,A0,A2,A4,A6};  //ピン番号
+  //const byte pin[NUM_balls] = {A8,A10,A14,A15,A13,A11,A9,A7,A5,A3,A1,A0,A2,A4,A6};  //ピン番号
+  const byte pin[NUM_balls] = {A0,A2,A4,A6,A8,A10,A12,A14,A15,A13,A11,A9,A7,A5,A3,A1};  //ピン番号
   const int _th = 700;      //反応限界
 };
 
@@ -39,12 +44,12 @@ class LINE {
 
  private:
   bool _LED = true;
-  int _pin[NUM_lines] = {32,34,36,   //前　外側から
+  const byte _pin[NUM_lines] = {32,34,36,   //前　外側から
                          46,47,48,   //右
                          33,35,37,   //後
                          44,45,49,   //左
                          38,40,50,52,39,41,51,53};  //円部分　前からCW
-  int ledpin = 30;                 //LED制御ピン
+  const byte ledpin = 30;                 //LED制御ピン
   int _th[NUM_lines];
 };
 
@@ -63,11 +68,11 @@ class BNO {
 class ULTRASONIC{
   public:
     int value[4];
-    void getall(); //全部測定
+    void get_all(); //全部測定
     int get(int n); //1つ測定
   private:
-    int echo_pin[4];
-    int trig_pin[4];
+    const byte echo_pin[4]={28,23,25,27};
+    const byte trig_pin[4]={29,22,23,26};
 };
 
 class CAMERA {

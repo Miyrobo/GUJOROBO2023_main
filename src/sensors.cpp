@@ -4,28 +4,57 @@
 
 Adafruit_BNO055 bno055 = Adafruit_BNO055(-1, 0x28);
 
-void BALL::get() {  //ボールの位置取得
+void BALL::get() {  // ボールの位置取得
   x = 0;
   y = 0;
-  num=0;
+  num = 0;
+  max = 0;
+  maxn = -1;
   for (int i = 0; i < NUM_balls; i++) {
-    int v=analogRead(pin[i]);
-    if(v < _th){
-      value[i]=_th-v;
+    int v = analogRead(pin[i]);
+    if (v < _th) {
+      value[i] = _th - v;
       num++;
-    }else{
-      value[i]=0;
+      if (value[i] > max) {
+        max = value[i];
+        maxn = i;
+      }
+    } else {
+      value[i] = 0;
     }
-    x += SIN16[i] * value[i];
-    y += SIN16[(i + 4) % 16] * value[i];
+    x += SIN16_1000[i] * value[i];
+    y += SIN16_1000[(i + 4) % 16] * value[i];
   }
+
   dir = atan2(x, y) * 57.3;
   distance = sqrt(x * x + y * y);
-  if(num>1){
-    isExist=true;
-  }else{
-    isExist=false;
+  if (num > 1) {
+    isExist = true;
+  } else {
+    isExist = false;
   }
+
+  if(maxn>=0){
+    dir=maxn*360/NUM_balls;
+  }else{
+    dir=1000;
+  }
+
+#ifdef ball_debug
+  Serial.print('B');
+  for (int i = 0; i < NUM_balls; i++) {
+    Serial.print(value[i] / 4);
+    Serial.print(',');
+  }
+  Serial.print(dir);
+  Serial.print(',');
+  Serial.print('\n');
+  // Serial.println("");
+  // Serial.print("  ");
+  // Serial.print(x);
+  // Serial.print("  ");
+  // Serial.println(y);
+#endif
 }
 
 void BNO::setup() {
@@ -48,11 +77,10 @@ void BNO::get() {
     dir += 360;
 }
 
-void BNO::reset() {  //攻め方向リセット
+void BNO::reset() {  // 攻め方向リセット
   this->get();
   dir0 = ypr[0];
 }
-
 
 void LINE::get_state() {
   for (int i = 0; i < NUM_lines; i++) {
@@ -64,10 +92,9 @@ void LINE::get_state() {
   }
 }
 
-
-void LINE::LEDset(int s = -1){  //ラインのLED操作
-  if(s==-1){
-    s=this->_LED;
+void LINE::LEDset(int s = -1) {  // ラインのLED操作
+  if (s == -1) {
+    s = this->_LED;
   }
-  digitalWrite(ledpin,s);
+  digitalWrite(ledpin, s);
 }
