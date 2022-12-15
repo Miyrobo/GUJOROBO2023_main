@@ -36,7 +36,7 @@ class LINE {
  public:
   bool isOnline = 0;   //ライン上か
   bool isHalfout = 0;  //半分以上外
-  int dir;             //コートの方向
+  int dir = 1000;             //コートの方向
   int x, y;            //位置
   void get_state();    //状態取得
   bool state[NUM_lines];
@@ -45,12 +45,15 @@ class LINE {
  private:
   bool _LED = true;
   const byte _pin[NUM_lines] = {32,34,36,   //前　外側から
-                         46,47,48,   //右
-                         33,35,37,   //後
-                         44,45,49,   //左
-                         38,40,50,52,39,41,51,53};  //円部分　前からCW
+                                46,47,48,   //右
+                                33,35,37,   //後
+                                44,45,49,   //左
+                                38,40,50,52,39,41,51,53};  //円部分　前からCW
+  const byte x_line[6] = {3,4,5,11,10,9}; //右から左
+  const byte y_line[6] = {0,1,2,8,7,6};    //前から後
+  const byte angel_line[8] = {12,13,14,15,16,17,18,19}; //円　前からCW
   const byte ledpin = 30;                 //LED制御ピン
-  int _th[NUM_lines];
+  int _th[NUM_lines]; //閾値 デジタルの場合不使用
 };
 
 class BNO {

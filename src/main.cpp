@@ -20,9 +20,9 @@ void setup() {
   Serial2.begin(9600);
 
   buzzer.windowsXP();
-  // pinMode(10, OUTPUT);
+  pinMode(10, OUTPUT);
   // // buzzer.windowsXP();
-  // digitalWrite(10, HIGH);
+  digitalWrite(10, HIGH);
   // delay(1000);
   // digitalWrite(10, LOW);
   // delay(1000);
@@ -36,10 +36,59 @@ void setup() {
   // }
 }
 
+// const int pingPin = 2;
+// const int ledPin = 13;
+// unsigned long duration;
+// unsigned long start_time;
+// unsigned long mes_time;
+// int cm;
+
+// void loop(){
+//   start_time = micros();
+//   //ピンをOUTPUTに設定（パルス送信のため）
+//   pinMode(pingPin, OUTPUT);
+//   //LOWパルスを送信
+//   digitalWrite(pingPin, LOW);
+//   delayMicroseconds(2);  
+//   //HIGHパルスを送信
+//   digitalWrite(pingPin, HIGH);  
+//   //5uSパルスを送信してPingSensorを起動
+//   delayMicroseconds(5); 
+//   digitalWrite(pingPin, LOW); 
+  
+//   //入力パルスを読み取るためにデジタルピンをINPUTに変更（シグナルピンを入力に切り替え）
+//   pinMode(pingPin, INPUT);   
+  
+//   //入力パルスの長さを測定
+//   duration = pulseIn(pingPin, HIGH);  
+
+//   //パルスの長さを半分に分割
+//   duration=duration/2;  
+//   //cmに変換
+//   cm = int(duration/29); 
+
+//   mes_time = micros() - start_time;
+//   if(cm <= 50) {
+//     digitalWrite(ledPin, HIGH);
+//   } else {
+//     digitalWrite(ledPin, LOW);
+//   }
+
+  
+//   Serial.print(cm);
+//   Serial.print("cm  ");
+//   Serial.print(mes_time);
+//   Serial.print("us  ");
+//   Serial.println();
+
+//   delay(100);
+// }
 
 void loop() {
-  //Serial.println(analogRead(A0));
-  ball.get();
+  Serial.print(digitalRead(A0));
+  Serial.print("  ");
+  Serial.println(analogRead(A0));
+  //ball.get();
   //Serial.println(ball.dir);
   delay(100);
 }

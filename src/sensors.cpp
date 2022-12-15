@@ -34,10 +34,10 @@ void BALL::get() {  // ボールの位置取得
     isExist = false;
   }
 
-  if(maxn>=0){
-    dir=maxn*360/NUM_balls;
-  }else{
-    dir=1000;
+  if (maxn >= 0) {
+    dir = maxn * 360 / NUM_balls;
+  } else {
+    dir = 1000;
   }
 
 #ifdef ball_debug
@@ -84,7 +84,7 @@ void BNO::reset() {  // 攻め方向リセット
 
 void LINE::get_state() {
   for (int i = 0; i < NUM_lines; i++) {
-    if (analogRead(_pin[i] > _th[i])) {
+    if (digitalRead(_pin[i])) {
       state[i] = true;
     } else {
       state[i] = false;
@@ -97,4 +97,35 @@ void LINE::LEDset(int s = -1) {  // ラインのLED操作
     s = this->_LED;
   }
   digitalWrite(ledpin, s);
+}
+
+int ULTRASONIC::get(int n) {
+  // ピンをOUTPUTに設定（パルス送信のため）
+  pinMode(trig_pin[n], OUTPUT);
+  // LOWパルスを送信
+  digitalWrite(trig_pin[n], LOW);
+  delayMicroseconds(2);
+  // HIGHパルスを送信
+  digitalWrite(trig_pin[n], HIGH);
+  // 5uSパルスを送信してPingSensorを起動
+  delayMicroseconds(5);
+  digitalWrite(trig_pin[n], LOW);
+
+  // 入力パルスを読み取るためにデジタルピンをINPUTに変更（シグナルピンを入力に切り替え）
+  pinMode(echo_pin[n], INPUT);
+
+  // 入力パルスの長さを測定
+  int duration = pulseIn(echo_pin[n], HIGH);
+
+  // パルスの長さを半分に分割
+  duration = duration / 2;
+  // cmに変換
+  value[n] = int(duration / 29);
+  return value[n];
+}
+
+void ULTRASONIC::get_all() {
+  for(int i=0;i<4;i++){
+    get(i);
+  }
 }
