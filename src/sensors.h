@@ -62,10 +62,10 @@ class BNO {
   void setup();
   void get();
   void reset();
-  int dir;
+  double dir;
 
  private:
-  int dir0;
+  double dir0;
 };
 
 class ULTRASONIC{

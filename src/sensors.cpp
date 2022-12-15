@@ -70,7 +70,6 @@ void BNO::get() {
   ypr[1] = euler.y();
   ypr[2] = euler.z();
   dir = ypr[0] - dir0;
-  dir %= 360;
   if (dir > 180)
     dir -= 360;
   else if (dir < -179)

@@ -6,6 +6,12 @@ void MOTOR::cal_power(int dir, int speed) {
   }
 }
 
+void MOTOR::cal_power(int dir, int speed, int rot) {
+  for (int i = 0; i < 4; i++) {
+    m_speed[i] = sin((dir - _angle[i]) / 57.3) * speed + rot;
+  }
+}
+
 void MOTOR::stop() {
   for (int i = 0; i < 4; i++) {
     m_speed[i] = 0;
@@ -43,4 +49,14 @@ void MOVE::carryball(int balldir){
   }else{
     this->dir = balldir * 1.5;
   }
+}
+
+
+int PID::run(double a){
+  t1 = micros();
+  dt = t1 - t0;
+  t0 = t1;
+  da = a-b;
+  v = da / (double)dt;
+  stack += a * (double)dt;
 }
