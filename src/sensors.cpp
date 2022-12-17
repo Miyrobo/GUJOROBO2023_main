@@ -3,6 +3,7 @@
 // HardwareSerial Serial_arduino(Serial2);   //サブマイコン用のUARTの番号
 
 Adafruit_BNO055 bno055 = Adafruit_BNO055(-1, 0x28);
+Pixy2 pixy;
 
 void BALL::get() {  // ボールの位置取得
   x = 0;
@@ -22,23 +23,31 @@ void BALL::get() {  // ボールの位置取得
     } else {
       value[i] = 0;
     }
-    x += SIN16_1000[i] * value[i];
-    y += SIN16_1000[(i + 4) % 16] * value[i];
+    x = x + (SIN16_1000[i] * ((double)value[i] / 1000.0));
+    y = y + (SIN16_1000[(i + 4) % 16] * ((double)value[i] / 1000.0));
   }
 
-  dir = atan2(x, y) * 57.3;
+  dir = atan2(x,y) * 57.3;
   distance = sqrt(x * x + y * y);
   if (num > 1) {
     isExist = true;
+    x=0;y=0;
+    for(int i=maxn+15;i<=maxn+17;i++){
+      x+=(SIN16_1000[i%16] * ((double)value[i%16] / 1000.0));
+      y+=(SIN16_1000[(i + 4) % 16] * ((double)value[i%16] / 1000.0));
+    }
+    dir = atan2(x,y) * 57.3;
   } else {
     isExist = false;
+    distance = 1000;
   }
 
-  if (maxn >= 0) {
-    dir = maxn * 360 / NUM_balls;
-  } else {
-    dir = 1000;
-  }
+  // if (maxn >= 0) {
+  //   dir = maxn * 360 / NUM_balls;
+  //   if(dir > 180)dir-=360;
+  // } else {
+  //   dir = 1000;
+  // }
 
 #ifdef ball_debug
   Serial.print('B');
@@ -47,6 +56,8 @@ void BALL::get() {  // ボールの位置取得
     Serial.print(',');
   }
   Serial.print(dir);
+  Serial.print(',');
+  Serial.print((int)distance);
   Serial.print(',');
   Serial.print('\n');
   // Serial.println("");
@@ -83,11 +94,7 @@ void BNO::reset() {  // 攻め方向リセット
 
 void LINE::get_state() {
   for (int i = 0; i < NUM_lines; i++) {
-    if (digitalRead(_pin[i])) {
-      state[i] = true;
-    } else {
-      state[i] = false;
-    }
+    state[i]=digitalRead(_pin[i]);
   }
 }
 
@@ -114,7 +121,7 @@ int ULTRASONIC::get(int n) {
   pinMode(echo_pin[n], INPUT);
 
   // 入力パルスの長さを測定
-  int duration = pulseIn(echo_pin[n], HIGH);
+  int duration = pulseIn(echo_pin[n], HIGH,timeout);  //応答がなかったら0
 
   // パルスの長さを半分に分割
   duration = duration / 2;

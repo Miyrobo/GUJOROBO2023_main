@@ -2,13 +2,13 @@
 
 void MOTOR::cal_power(int dir, int speed) {
   for (int i = 0; i < 4; i++) {
-    m_speed[i] = sin((dir - _angle[i]) / 57.3) * speed;
+    m_speed[i] = (int)(sin((dir - _angle[i]) / 57.3) * speed);
   }
 }
 
 void MOTOR::cal_power(int dir, int speed, int rot) {
   for (int i = 0; i < 4; i++) {
-    m_speed[i] = sin((dir - _angle[i]) / 57.3) * speed + rot;
+    m_speed[i] = (int)(sin((dir - _angle[i]) / 57.3) * speed) + rot;
   }
 }
 
@@ -44,10 +44,23 @@ void MOTOR::set_power(int m1, int m2, int m3, int m4) {
 
 
 void MOVE::carryball(int balldir){
-  if(balldir <= 5 && balldir >= -5){
+  if(balldir <= 15 && balldir >= -15){
     this->dir = 0;
   }else{
-    this->dir = balldir * 1.5;
+    int a;
+    if(balldir <= 30 && balldir >= -30){
+      a=20;
+      this->speed = 40;
+    }else if(balldir <= 60 && balldir >= -60){
+      a=30;
+    }else{
+      a=50;
+    }
+    if(balldir > 0){
+      this->dir = balldir + a;
+    }else{
+      this->dir = balldir - a;
+    }
   }
 }
 
@@ -57,6 +70,14 @@ int PID::run(double a){
   dt = t1 - t0;
   t0 = t1;
   da = a-b;
-  v = da / (double)dt;
-  stack += a * (double)dt;
+  b = a;  //前回の値
+  v = da / (double)dt * 1000;
+  stack += a * (double)dt / 1000;
+  if(stack > 100)stack=100;
+  else if(stack < -100)stack=-100;
+  return -(Kp * a + Ki * stack + Kd * v);
+}
+
+void kicker(bool out){
+  digitalWrite(9,out);
 }
