@@ -1,7 +1,7 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-//#define ball_debug
+#define ball_debug
 
 #include "Adafruit_BNO055.h"
 #include "Arduino.h"

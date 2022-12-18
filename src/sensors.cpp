@@ -27,7 +27,7 @@ void BALL::get() {  // ボールの位置取得
     y = y + (SIN16_1000[(i + 4) % 16] * ((double)value[i] / 1000.0));
   }
 
-  dir = atan2(x,y) * 57.3;
+  //dir = atan2(x,y) * 57.3;
   distance = sqrt(x * x + y * y);
   if (num > 1) {
     isExist = true;
@@ -39,6 +39,7 @@ void BALL::get() {  // ボールの位置取得
     dir = atan2(x,y) * 57.3;
   } else {
     isExist = false;
+    dir=1000;
     distance = 1000;
   }
 
@@ -50,6 +51,7 @@ void BALL::get() {  // ボールの位置取得
   // }
 
 #ifdef ball_debug
+if(Serial.read()=='B'){
   Serial.print('B');
   for (int i = 0; i < NUM_balls; i++) {
     Serial.print(value[i] / 4);
@@ -65,6 +67,7 @@ void BALL::get() {  // ボールの位置取得
   // Serial.print(x);
   // Serial.print("  ");
   // Serial.println(y);
+}
 #endif
 }
 

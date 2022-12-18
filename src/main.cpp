@@ -30,7 +30,7 @@ void setup() {
   // buzzer.windowsXP();
   pinMode(10, OUTPUT);
   // // buzzer.windowsXP();
-  digitalWrite(10, HIGH);
+  digitalWrite(10, LOW);
   // delay(1000);
   // digitalWrite(10, LOW);
   // delay(1000);
@@ -45,11 +45,11 @@ void setup() {
   pinMode(9, OUTPUT);
   pinMode(4, INPUT_PULLUP);
   pinMode(13, INPUT_PULLUP);
-  pinMode(Pin_sw1,INPUT_PULLUP);
-  pinMode(Pin_sw2,INPUT_PULLUP);
-  pinMode(Pin_sw3,INPUT_PULLUP);
-  pinMode(Pin_sw4,INPUT_PULLUP);
-  //digitalWrite(kickerpin, 1);
+  pinMode(Pin_sw1, INPUT_PULLUP);
+  pinMode(Pin_sw2, INPUT_PULLUP);
+  pinMode(Pin_sw3, INPUT_PULLUP);
+  pinMode(Pin_sw4, INPUT_PULLUP);
+  // digitalWrite(kickerpin, 1);
   delay(100);
   digitalWrite(kickerpin, 0);
   line.begin();
@@ -58,40 +58,38 @@ void setup() {
 int dir = 0, speed = 0;
 
 void loop() {
-  if(SW4){
+  if (SW4) {
     bno.reset();
   }
-  ball.get();
-  bno.get();
   // Serial.println(ball.dir);
-  if (digitalRead(4)) {
-    
-    if (linet.get() > 50) move.carryball(ball.dir);
+  if (digitalRead(4)) {  //トグル
+    if (linet.get() > 50 || 1) move.carryball(ball.dir);
     move.speed = 80;
-    if (!ball.isExist){
+    if (!ball.isExist) {
       move.speed = 0;
-      if(ping.get(2) > 50){
-        move.dir=180;
-        move.speed=50;
-      }
+      // if (ping.get(2) > 50 ) {
+      //   move.dir = 180;
+      //   move.speed = 50;
+      // }
     }
-    if (line.state[0] || line.state[1] || line.state[2]) {
-      move.dir = 180;
-      move.speed = 80;
-      linet.reset();
-    } else if (line.state[3] || line.state[4] || line.state[5]) {
-      move.dir = -90;
-      move.speed = 80;
-      linet.reset();
-    } else if (line.state[6] || line.state[7] || line.state[8]) {
-      move.dir = 0;
-      move.speed = 80;
-      linet.reset();
-    } else if (line.state[9] || (line.state[10]&&0) || line.state[11]) {
-      move.dir = 90;
-      move.speed = 80;
-      linet.reset();
-    }
+    //ライン
+    // if (line.state[0] || line.state[1] || line.state[2]) {
+    //   move.dir = 180;
+    //   move.speed = 80;
+    //   linet.reset();
+    // } else if (line.state[3] || line.state[4] || line.state[5]) {
+    //   move.dir = -90;
+    //   move.speed = 80;
+    //   linet.reset();
+    // } else if (line.state[6] || line.state[7] || line.state[8]) {
+    //   move.dir = 0;
+    //   move.speed = 80;
+    //   linet.reset();
+    // } else if (line.state[9] || (line.state[10] && 0) || line.state[11]) {
+    //   move.dir = 90;
+    //   move.speed = 80;
+    //   linet.reset();
+    // }
     motor.cal_power(move.dir, move.speed, pid.run(bno.dir));
   } else
     motor.set_power(0, 0, 0, 0);
@@ -106,17 +104,23 @@ void loop() {
     delay(200);
   }
 
-  if (timer.get() > 200) {
+  if (timer.get() > 50) {
+    ball.get();
+    line.get_state();
+    Serial.print('L');
     for (int i = 0; i < NUM_lines; i++) {
       Serial.print(line.state[i]);
     }
     Serial.println();
-    ping.get_all();
+    // ping.get_all();
     display.clearDisplay();
     display.setTextSize(1);
     display.setTextColor(WHITE);
     display.setCursor(0, 0);
-
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(5, 28);
+    display.print("Singlarity");
     // display.println(digitalRead(16));
     // display.println(digitalRead(17));
     // display.println(digitalRead(18));
